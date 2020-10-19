@@ -6,34 +6,30 @@ import { Form } from 'semantic-ui-react';
 const AmericanQuestion = ({
   onChange,
   question,
-  allAnswers,
-  index: qIndex,
+  selected,
+  qIndex,
   answers = [],
   ...restProps
 }) => {
   const answersFields = answers.map((q, index) => (
-    <div className="field" key={index}>
-      <div className="ui radio checkbox">
-        <input
-          type="radio"
-          name={index}
-          tabIndex="0"
-          checked={allAnswers[qIndex] === index}
-          value={index}
-          className="hidden"
-        />
-        <label>{q}</label>
-      </div>
-    </div>
+    <Form.Field
+      key={index}
+      label={q}
+      control="input"
+      type="radio"
+      name={`q{${qIndex}}`}
+      checked={selected === index}
+      onChange={(e) => onChange(e, qIndex, index)}
+    />
   ));
 
   return (
-    <div className="AmericanQuestion" {...restProps}>
-      <div className="grouped fields" onChange={onChange}>
-        <label htmlFor="fruit">{question}</label>
+    <>
+      <Form.Group grouped {...restProps}>
+        <label htmlFor={`q{${qIndex}}`}>{question}</label>
         {answersFields}
-      </div>
-    </div>
+      </Form.Group>
+    </>
   );
 };
 export default AmericanQuestion;
